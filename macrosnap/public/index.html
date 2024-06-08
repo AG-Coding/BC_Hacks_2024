@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MacroSnap</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">MacroSnap</div>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#" id="login-btn">Login</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to MacroSnap</h1>
+        <p>Experience the best UI and smooth animations.</p>
+        <a href="#" class="cta-btn">Get Started</a>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <i class="fas fa-utensils"></i>
+            <h3>Food Recognition</h3>
+            <p>Identify various foods using our advanced vision detection technology.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-chart-pie"></i>
+            <h3>Track Nutrients</h3>
+            <p>Keep track of calories, nutrients, and other vital information effortlessly.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-dumbbell"></i>
+            <h3>Optimize Diet</h3>
+            <p>Optimize your diet for better workouts and improved productivity.</p>
+        </div>
+    </section>
+
+    <div class="login-modal" id="login-modal">
+        <div class="login-modal-content">
+            <span class="close-btn" id="close-btn">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
