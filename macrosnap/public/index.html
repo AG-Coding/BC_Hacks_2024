@@ -16,11 +16,33 @@
 
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        video,
+        canvas {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        #capture {
+            margin-top: 20px;
+        }
+
+        #results {
+            margin-top: 20px;
+            color: #333;
         }
 
         .navbar {
@@ -105,7 +127,7 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background: url('https://via.placeholder.com/1500x800') no-repeat center center/cover;
+            background: url('https://i.imgur.com/LCg5bk5.jpeg') no-repeat center center/cover;
             color: #fff;
             text-align: center;
             animation: fadeIn 2s ease-in-out;
@@ -259,7 +281,143 @@
             </li>
         </ul>
     </nav>
+    <h1>Food Detection</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <button id="capture">Capture Image</button>
+    <div id="results"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.6.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const captureButton = document.getElementById('capture');
+        const resultsDiv = document.getElementById('results');
+        let model;
 
+        async function setupCamera() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { width: 640, height: 480 },
+            });
+            video.srcObject = stream;
+            return new Promise((resolve) => {
+                video.onloadedmetadata = () => {
+                    resolve(video);
+                };
+            });
+        }
+
+        async function loadModel() {
+            model = await cocoSsd.load();
+        }
+
+        function applyNMS(predictions, iouThreshold = 0.5) {
+            predictions.sort((a, b) => b.score - a.score);
+            const picked = [];
+            const areas = predictions.map(p => p.bbox[2] * p.bbox[3]);
+
+            for (let i = 0; i < predictions.length; i++) {
+                const a = predictions[i];
+                let keep = true;
+                for (let j = 0; j < picked.length; j++) {
+                    const b = picked[j];
+                    const intersection = Math.max(0, Math.min(a.bbox[0] + a.bbox[2], b.bbox[0] + b.bbox[2]) - Math.max(a.bbox[0], b.bbox[0])) *
+                        Math.max(0, Math.min(a.bbox[1] + a.bbox[3], b.bbox[1] + b.bbox[3]) - Math.max(a.bbox[1], b.bbox[1]));
+                    const iou = intersection / (areas[i] + areas[j] - intersection);
+                    if (iou > iouThreshold) {
+                        keep = false;
+                        break;
+                    }
+                }
+                if (keep) picked.push(a);
+            }
+            return picked;
+        }
+
+        async function detectFood() {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const predictions = await model.detect(video);
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const detectedFoods = [];
+            const foodClasses = ['apple', 'banana', 'orange', 'carrot', 'broccoli', 'hot dog', 'pizza', 'donut', 'cake'];
+            const filteredPredictions = predictions.filter(prediction => foodClasses.includes(prediction.class));
+            const finalPredictions = applyNMS(filteredPredictions);
+
+            finalPredictions.forEach((prediction) => {
+                context.beginPath();
+                context.rect(...prediction.bbox);
+                context.lineWidth = 2;
+                context.strokeStyle = 'green';
+                context.fillStyle = 'green';
+                context.stroke();
+                context.fillText(
+                    `${prediction.class} (${(prediction.score * 100).toFixed(2)}%)`,
+                    prediction.bbox[0],
+                    prediction.bbox[1] > 10 ? prediction.bbox[1] - 5 : 10
+                );
+
+                detectedFoods.push(`${prediction.class}: ${(prediction.score * 100).toFixed(2)}%`);
+            });
+
+            resultsDiv.innerHTML = '<h2>Detection Results:</h2>';
+            if (detectedFoods.length > 1) {
+                detectedFoods.forEach((food) => {
+                    resultsDiv.innerHTML += `<p>${food}</p>`;
+                });
+            } else if (detectedFoods.length === 1) {
+                resultsDiv.innerHTML += `<p>${detectedFoods[0]}</p>`;
+            } else {
+                resultsDiv.innerHTML += '<p>No foods detected</p>';
+            }
+
+            requestAnimationFrame(detectFood);
+        }
+
+        function captureImage() {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataURL = canvas.toDataURL();
+            const img = new Image();
+            img.src = dataURL;
+            img.onload = async () => {
+                context.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const predictions = await model.detect(img);
+
+                const detectedFoods = [];
+                const foodClasses = ['apple', 'banana', 'orange', 'carrot', 'broccoli', 'hot dog', 'pizza', 'donut', 'cake'];
+                const filteredPredictions = predictions.filter(prediction => foodClasses.includes(prediction.class));
+                const finalPredictions = applyNMS(filteredPredictions);
+
+                finalPredictions.forEach((prediction) => {
+                    detectedFoods.push(`${prediction.class}: ${(prediction.score * 100).toFixed(2)}%`);
+                });
+
+                resultsDiv.innerHTML = '<h2>Detection Results:</h2>';
+                if (detectedFoods.length > 1) {
+                    detectedFoods.forEach((food) => {
+                        resultsDiv.innerHTML += `<p>${food}</p>`;
+                    });
+                } else if (detectedFoods.length === 1) {
+                    resultsDiv.innerHTML += `<p>${detectedFoods[0]}</p>`;
+                } else {
+                    resultsDiv.innerHTML += '<p>No foods detected</p>';
+                }
+            };
+        }
+
+        async function main() {
+            await setupCamera();
+            await loadModel();
+            detectFood();
+
+            captureButton.addEventListener('click', captureImage);
+        }
+
+        main();
+    </script>
     <section class="hero">
         <h1>Welcome to MacroSnap</h1>
         <a href="#" class="cta-btn">Generate Insights</a>
