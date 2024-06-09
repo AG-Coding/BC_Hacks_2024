@@ -218,7 +218,7 @@
 
         .hidden-textbox {
             display: none;
-            background-color: #1e1e1e;
+            background-color: #ccc;
             border-radius: 15px;
             padding: 20px;
             max-width: 600px;
@@ -448,6 +448,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.6.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
     <script>
+        var global = new Set();
         const video = document.getElementById('video');
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
@@ -520,6 +521,7 @@
                 );
 
                 detectedFoods.push(`${prediction.class}: ${(prediction.score * 100).toFixed(2)}%`);
+                global.add(prediction.class);
             });
 
             resultsDiv.innerHTML = '<h2>Detection Results:</h2>';
@@ -546,12 +548,14 @@
                 const predictions = await model.detect(img);
 
                 const detectedFoods = [];
+
                 const foodClasses = ['apple', 'banana', 'orange', 'carrot', 'broccoli', 'hot dog', 'pizza', 'donut', 'cake'];
                 const filteredPredictions = predictions.filter(prediction => foodClasses.includes(prediction.class));
                 const finalPredictions = applyNMS(filteredPredictions);
 
                 finalPredictions.forEach((prediction) => {
                     detectedFoods.push(`${prediction.class}: ${(prediction.score * 100).toFixed(2)}%`);
+                    global.add(prediction.class);
                 });
 
                 resultsDiv.innerHTML = '<h2>Detection Results:</h2>';
@@ -628,7 +632,14 @@
 
         document.querySelector('.cta-btn').addEventListener('click', async () => {
             try {
-                const response = await fetch('/api/generate-content');
+                let temp = JSON.stringify([...global]);
+                const response = await fetch('/api/generate-content', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: temp,
+                });
                 const data = await response.json();
                 var converter = new showdown.Converter(),
                     text = data.content,
