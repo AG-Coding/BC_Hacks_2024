@@ -62,19 +62,20 @@ app.get('/gauthenticate', async (req, res) => {
 
 
 
-app.get('/api/generate-content', async (req, res) => {
+app.post('/api/generate-content', async (req, res) => {
     const exampleFood = {
         "oranges": " 1 medium",
         "apples": "2 large",
         "bananas": "3 large"
     };
-
+    const food = req.body;
+    const foodString = JSON.stringify(food);
     const exampleFoodString = JSON.stringify(exampleFood);
-    const promptStart = "Pretend you're a registered dietition. Please help me track my daily nutrient and calorie intake. Provide me with insights based on the foods I've eaten throughout the day. Identify any nutrients or calories I have overeaten and suggest adjustments to optimize my diet for better workouts and improved productivity. Here's the list of foods I consumed today:";
+    const promptStart = "Pretend you're a registered dietitian. Please help me track my daily nutrient and calorie intake. Provide me with insights based on the foods I've eaten throughout the day. Identify any nutrients or calories I have overeaten and suggest adjustments to optimize my diet for better workouts and improved productivity. Give me the number of calories in the items, phrase it like 'Calories: ' and share 1-2 fun facts! Here's the list of foods I consumed today (1 of each):";
 
     try {
 
-        const result = await model.generateContent(promptStart + exampleFoodString);
+        const result = await model.generateContent(promptStart + foodString);
         const response = await result.response;
         const text = response.text();  // Ensure this is a function call
         res.json({ content: text });

@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: url('bg-img.jpg') no-repeat center center/cover;
+      /* background: url('bg-img.jpg') no-repeat center center/cover; */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -213,6 +213,7 @@
         );
 
         detectedFoods.push(`${prediction.class}: ${(prediction.score * 100).toFixed(2)}%`);
+        global.add(prediction.class);
       });
 
       resultsDiv.innerHTML = '<h2>Detection Results:</h2>';
