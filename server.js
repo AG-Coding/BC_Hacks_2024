@@ -71,7 +71,7 @@ app.post('/api/generate-content', async (req, res) => {
     const food = req.body;
     const foodString = JSON.stringify(food);
     const exampleFoodString = JSON.stringify(exampleFood);
-    const promptStart = "Pretend you're a registered dietitian. Please help me track my daily nutrient and calorie intake. Provide me with insights based on the foods I've eaten throughout the day. Identify any nutrients or calories I have overeaten and suggest adjustments to optimize my diet for better workouts and improved productivity. Give me the number of calories in the items, phrase it like 'Calories: ' and share 1-2 fun facts! Here's the list of foods I consumed today (1 of each):";
+    const promptStart = "Pretend you're a registered dietitian. Please help me track my daily nutrient and calorie intake. Provide me with insights based on the foods I just ate. Identify any nutrients or calories I have overeaten and suggest adjustments to optimize my diet for better workouts and improved productivity. Give me the number of calories in the items, phrase it like 'Calories: ' and share 1-2 fun facts! Here's the list of foods I consumed today (1 of each):";
 
     try {
 
