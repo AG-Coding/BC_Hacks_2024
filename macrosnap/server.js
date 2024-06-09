@@ -5,7 +5,23 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
+const { OAuth2Client } = require('google-auth-library');
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
+const mongoUrl = 'mongodb+srv://tom564tom:7ycl8HbAZ4i9aL2l@cluster0.nf4tb9i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+//const mongoUrl = 'mongodb+srv://tom564tom:<password>@cluster0.nf4tb9i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+MongoClient.connect(mongoUrl, (err, client) => {
+    if (err) {
+        console.error('Error connecting to MongoDB:', err);
+        process.exit(1);
+    }
+    console.log('Connected to MongoDB');
+    //change to ur name
+    const db = client.db('Cluster0');
+    //const users = db.collection('users');
+    //app.locals.users = users;
+});
+//XmYRz8FGjWBU5mBW 
 // Access your API key as an environment variable
 const apiKey = process.env.API_KEY;
 if (!apiKey) {
@@ -15,6 +31,19 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+//28:50
+async function verify(client, token) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    // If the request specified a Google Workspace domain:
+    // const domain = payload['hd'];
+}
 
 // Middleware
 app.use(cors());
@@ -23,6 +52,15 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+app.get('/gauthenticate', async (req, res) => {
+    var token = req.query.token;
+    const client = new OAuth2Client(CLIENT_ID);
+    var x = await verify(client, token).catch(console.error);
+});
+
+
+
 
 app.get('/api/generate-content', async (req, res) => {
     const exampleFood = {
