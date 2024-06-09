@@ -50,7 +50,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'camera.html'));
 });
 
 app.get('/gauthenticate', async (req, res) => {
