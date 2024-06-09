@@ -1,14 +1,19 @@
-var icon = document.getElementById("icon");
-var icon1 = document.getElementById("a");
-var icon2 = document.getElementById("b");
-var icon3 = document.getElementById("c");
-var nav = document.getElementById('nav');
-var blue = document.getElementById("blue");
+document.querySelector('.toggler').addEventListener('change', function() {
+  const toggler = this;
+  const hamburger = document.querySelector('.hamburger > div');
+  const menu = document.querySelector('.menu');
+  const menuDiv = document.querySelector('.menu > div');
+  const links = document.querySelectorAll('.menu > div a');
 
-icon.addEventListener('click', function() {
-  icon1.classList.toggle('a');
-  icon2.classList.toggle('c');
-  icon3.classList.toggle('b');
-  nav.classList.toggle('show');
-  blue.classList.toggle('slide');
+  if (toggler.checked) {
+      menu.style.width = "30vw";
+      menu.style.opacity = "1";
+      menuDiv.style.opacity = "1";
+      links.forEach(link => link.style.opacity = "1");
+  } else {
+      menu.style.width = "0";
+      menu.style.opacity = "0";
+      menuDiv.style.opacity = "0";
+      links.forEach(link => link.style.opacity = "0");
+  }
 });
