@@ -1,29 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="menu.css" />
-    <title>Hamburger Overlay Menu</title>
+  <title>MacroSnap: Unlocking Human Communication</title>
+  <meta property="og:title" content="MacroSnap: Unlocking Human Communication" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta property="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="menu.css" />
+  <style>
+    /* Custom CSS */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #1e1e1e;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: url('bg-img.jpg') no-repeat center center/cover;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    .home-container {
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .home-section {
+      margin: 20px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 20px;
+      width: calc(50% - 40px);
+    }
+
+    .home-section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .home-text {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-text::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #ffffff;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s ease;
+    }
+
+    .home-text:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .home-text-sub {
+      font-size: 20px;
+      color: #eeeeee;
+    }
+
+    .home-description {
+      font-size: 18px;
+      color: #cccccc;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .home-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Neat 3D squares */
+    .square {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 100px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body>
-    <div class="menu-wrap">
-        <input type="checkbox" class="toggler" />
-        <div class="hamburger"><div></div></div>
-        <div class="menu">
-            <div>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">My Work</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
-        </div>
+  <div class="menu-wrap">
+    <input type="checkbox" class="toggler" />
+    <div class="hamburger"><div></div></div>
+    <div class="menu">
+      <div>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Food Detecter</a></li>
+          <li><a href="#">Results</a></li>
+        </ul>
+      </div>
     </div>
-    <header></header>
-    <script src="script.js"></script>
+  </div>
+  <header></header>
+  <div class="home-container">
+    <div class="home-section">
+      <div class="square"></div>
+      <span class="home-text">Unlocking the Potential of Human Communication</span><br>
+      <span class="home-text-sub">with MacroSnap</span>
+      <div class="dropdown">
+        <img src="public/external/image211747-zusu-400h.png" alt="MacroSnap Illustration" class="home-image">
+        <div class="dropdown-content">
+          <p class="home-description">MacroSnap uses cutting-edge technology to analyze speech and personality traits, helping you unlock the full potential of your communication skills.</p>
+        </div>
+      </div>
+    </div>
+    <div class="home-section">
+      <div class="square"></div>
+      <span class="home-text">Story of MacroSnap</span>
+      <div class="dropdown">
+        <div class="dropdown-content">
+          <p>The inspiration behind MacroSnap stems from the desire to empower individuals to communicate more effectively and understand themselves better. By leveraging technology to analyze speech and provide personalized feedback, we aim to help people overcome communication barriers, enhance their self-awareness, and ultimately, enrich their lives.</p>
+        </div>
+      </div>
+    </div>
+    <div class="home-section">
+      <div class="square"></div>
+      <span class="home-text-sub">Discover Your Essence</span><br>
+      <span class="home-text">What We Do</span>
+      <div class="dropdown">
+        <div class="dropdown-content">
+          <p>MacroSnap Insight employs advanced voice analysis algorithms to track subtle nuances in tone, pitch, and rhythm, providing a comprehensive understanding of emotional expression during speech.</p>
+        </div>
+        <img src="public/external/image224747-xko-200h.png" alt="Video Tracking" class="home-image">
+      </div>
+    </div>
+    <div class="home-section">
+      <div class="square"></div>
+      <span class="home-text-sub">Receive Detailed Insights</span><br>
+      <span class="home-text">Results</span>
+      <div class="dropdown">
+        <img src="public/external/vector1716-aqa9.svg" alt="Results" class="home-image">
+        <div class="dropdown-content">
+          <p>MacroSnap Insight provides actionable feedback on your speech patterns, personality traits, and emotional expressions, empowering you to enhance your communication skills and deepen your self-awareness.</p>
+        </div>
+      </div>
+    </div>
+    <div class="home-section">
+      <div class="square"></div>
+      <span class="home-text">How It Works</span>
+      <div class="dropdown">
+        <div class="dropdown-content">
+          <p>MacroSnap is a speech analysis tool that provides insights into various aspects of verbal communication, personality traits, and emotions when speaking. It analyzes speech patterns, tone, and delivery to offer feedback on communication effectiveness.</p>
+        </div>
+      </div>
+    </div>
+    <div class="home-section">
+      <div class="square"></div>
+      <span class="home-text">About Us</span>
+      <div class="dropdown">
+        <div class="dropdown-content">
+          <p>At MacroSnap, we're passionate about unlocking the potential of human communication. Our team of experts combines cutting-edge technology with psychology to create a revolutionary tool that analyzes speech and personality traits. We believe that understanding how we speak and express ourselves is key to personal growth and effective communication. With MacroSnap, embark on a journey of self-discovery and communication mastery.</p>
+        </div>
+        <img src="public/external/rectangle1571715-pel-200h.png" alt="About Me" class="home-image">
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const sections = document.querySelectorAll(".home-section");
+
+      function checkScroll() {
+        sections.forEach((section) => {
+          const sectionTop = section.getBoundingClientRect().top;
+          const windowHeight = window.innerHeight;
+          if (sectionTop < windowHeight * 0.75) {
+            section.classList.add("active");
+          }
+        });
+      }
+
+      window.addEventListener("scroll", checkScroll);
+      checkScroll();
+    });
+  </script>
 </body>
 </html>
