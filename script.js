@@ -29,7 +29,7 @@ async function detectFruit(model) {
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   predictions.forEach((prediction) => {
-    if (['apple', 'banana', 'orange'].includes(prediction.class)) {
+    if (['apple', 'banana', 'orange', 'carrot', 'broccoli', 'hot dog'].includes(prediction.class)) {
       context.beginPath();
       context.rect(...prediction.bbox);
       context.lineWidth = 2;
@@ -58,7 +58,7 @@ function captureImage(model) {
 
     resultsDiv.innerHTML = '<h2>Detection Results:</h2>';
     predictions.forEach((prediction) => {
-      if (['apple', 'banana', 'orange'].includes(prediction.class)) {
+      if (['apple', 'banana', 'orange', 'carrot', 'broccoli', 'hot dog'].includes(prediction.class)) {
         resultsDiv.innerHTML += `<p>${prediction.class}: ${(prediction.score * 100).toFixed(2)}%</p>`;
       }
     });
