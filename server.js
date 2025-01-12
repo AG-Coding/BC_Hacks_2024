@@ -1,3 +1,11 @@
+/**
+ * This section of the code imports the necessary modules for building the server, handling requests, and 
+ * interacting with external services. express is used to create the web server, while body-parser and cors 
+ * manage request parsing and cross-origin requests. The path module is used for file path operations, 
+ * and mongodb enables interactions with the MongoDB database. Additionally, the Google Generative AI API 
+ * and the OAuth2 library are imported for user authentication and content generation tasks.
+ * 
+ */
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -61,7 +69,7 @@ app.get('/gauthenticate', async (req, res) => {
 
 
 
-
+//POST endpoint to generate content based on the user's food input
 app.post('/api/generate-content', async (req, res) => {
     const exampleFood = {
         "oranges": " 1 medium",
@@ -74,7 +82,7 @@ app.post('/api/generate-content', async (req, res) => {
     const promptStart = "Pretend you're a registered dietitian. Please help me track my daily nutrient and calorie intake. Provide me with insights based on the foods I just ate. Identify any nutrients or calories I have overeaten and suggest adjustments to optimize my diet for better workouts and improved productivity. Give me the number of calories in the items, phrase it like 'Calories: ' and share 1-2 fun facts! Here's the list of foods I consumed today (1 of each):";
 
     try {
-
+         //Call the generative AI model with the food data as input
         const result = await model.generateContent(promptStart + foodString);
         const response = await result.response;
         const text = response.text();  // Ensure this is a function call

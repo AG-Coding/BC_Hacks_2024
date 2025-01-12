@@ -18,7 +18,8 @@ The inspiration for MacroSnap came from the everyday struggle of tracking nutrit
 
 ## Progress
 
-- Currently we have image detection running of a webpage, which can present your calories and fact about the food you eat.
+- Currently the program only detects fruits
+- The image detection is running off a webpage, which can present your calories and fact about the food you eat.
 - Logging Calories can showing results in still a work in progress, image mocks can be viewed here: https://devpost.com/software/macrosnap
 - image mocks are alos uploaded in the folder app presentation along with a power point
 
